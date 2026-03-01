@@ -261,77 +261,100 @@ int main()
 ```
 実行時間制限: 2 sec / メモリ制限: 1024 MiB
 
-配点 : 
-400 点
+配点 : 400 点
 
 問題文
-A , B , C の 
-3 種類の文字のみからなる文字列 
-S が与えられます。
+A , B , C の 3 種類の文字のみからなる文字列 S が与えられます。
 
 操作を以下のように定義します。
 
-1≤i<j<k≤∣S∣ かつ 
-S 
-i
-​
- = A , 
-S 
-j
-​
- = B , 
-S 
-k
-​
- = C を満たす 
-(i,j,k) の組を選び、
-S の 
-i,j,k 文字目を取り除く。残った文字を元の順序を保ったまま左に詰める。
+1≤i<j<k≤∣S∣ かつ Si = A , Sj = B , Sk = C を満たす (i,j,k) の組を選び、
+S の i,j,k 文字目を取り除く。残った文字を元の順序を保ったまま左に詰める。
 
-文字列 
-S に対して最大で何回操作を行うことができるかを求めてください。
+文字列 S に対して最大で何回操作を行うことができるかを求めてください。
 
 制約
-1≤∣S∣≤10 
-6
- 
+1≤∣S∣≤10^6
 S は A , B , C のみからなる文字列である
 入力
 入力は以下の形式で標準入力から与えられる。
-
 S
 出力
 答えを出力せよ。
 
 入力例 1
-Copy
 ABACBCC
 出力例 1
-Copy
 2
 以下のように操作をすることで 
 2 回操作できます。
-
 ABACBCC に対して 
 (i,j,k)=(1,2,7) として操作する。残った文字列は ACBC となる。
-
 ACBC に対して 
 (i,j,k)=(1,3,4) として操作する。残った文字列は C となる。
-
 3 回以上操作することはできないため、答えは 
 2 となります。よって 
 2 と出力してください。
 
 入力例 2
-Copy
 CBACBB
 出力例 2
-Copy
 0
+
 入力例 3
-Copy
 BBBAAABCBCBAACBBCAAC
 出力例 3
-Copy
 5
+```
+この問題は「前から貪欲」の問題です。まずはABCの添え字を保存する。もしABCの添え字は単調増加ならansは1増やして、最後に答えがみつけます。
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    ios::sync_with_stdio(false);cin.tie(NULL);
+    string s;
+    cin>>s;
+    int len;
+    len=s.size();
+    vector<int> num_a;
+    vector<int> num_b;
+    vector<int> num_c;
+    for(int i=0;i<len;i++)
+    {
+        if(s[i]=='A')
+        num_a.push_back(i);
+        if(s[i]=='B')
+        num_b.push_back(i);
+        if(s[i]=='C')
+        num_c.push_back(i);
+    }
+    int ans=0;
+    for(int a=0,b=0,c=0;a<num_a.size()&&b<num_b.size()&&c<num_c.size();)
+    {
+        if(num_a[a]<num_b[b]&&num_b[b]<num_c[c])
+        {
+            ans++;
+            a++;
+            b++;
+            c++;
+            continue;
+        }
+        else
+        {
+            if(num_b[b]<num_a[a])
+            {
+                b++;
+                continue;
+            }
+            if(num_c[c]<num_b[b])
+            {
+                c++;
+                continue;
+            }
+        }
+    }
+    cout<<ans<<"\n";
+    return 0;
+}
 ```
