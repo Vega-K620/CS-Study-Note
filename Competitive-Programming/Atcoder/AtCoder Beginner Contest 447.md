@@ -200,23 +200,23 @@ int main()
     string S;
     cin >> S;
     
-    int a = 0, ab = 0, abc = 0;
-    for (char c : S)
+    int a=0,ab=0,abc=0;
+    for(char c:S)
     {
-        if (c == 'A')
+        if(c=='A')
         {
             a++;
         }
-        else if (c == 'B')
+        else if(c=='B')
         {
-            if (a > 0) { a--; ab++; }
+            if(a>0){a--;ab++;}
         }
-        else if (c == 'C')
+        else if(c=='C')
         {
-            if (ab > 0) { ab--; abc++; }
+            if(ab>0){ab--;abc++;}
         }
     }
-    cout << abc << endl;
+    cout<<abc<<endl;
     return 0;
 }
 ```
