@@ -6,7 +6,7 @@
 
 ## A - Attack
 ### https://atcoder.jp/contests/adt_easy_20260302_2/tasks/abc302_a
-問題Aは簡単だと思います。A/Bは答えです。しかしA％B!=0の時は答えを1つ増やす必要があります。
+問題Aは簡単だと思います。A/Bは答えです。しかしA％B!=0の時は答えを1つ増やす必要があります。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -27,7 +27,7 @@ int main()
 ```
 ## B - Status Code
 ### https://atcoder.jp/contests/adt_easy_20260302_2/tasks/abc401_a
-問題Bも簡単です。「if」を使って解決できます。
+問題Bも簡単です。「if」を使って解決できます。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -48,7 +48,7 @@ int main()
 ```
 ## C - cat 2
 ### https://atcoder.jp/contests/adt_easy_20260302_2/tasks/abc413_b
-この問題は「set」を使って全探索で答えを得る。主に「set」の自動重複排除機能を活用します。
+この問題は「set」を使って全探索で答えを得る。主に「set」の自動重複排除機能を活用します。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -78,11 +78,11 @@ int main()
 ```
 ## D - Strictly Superior
 ### https://atcoder.jp/contests/adt_easy_20260302_2/tasks/abc310_b
-この問題は全探索で答えることができます。基準を満たすものを見つけるだけです。
-まずはPi>=Pjのものを探します。
-そして条件を満たすの中でiのすべての機能を走査し、それらがすべてF[j]にあるかどうかを確認します。
-最後に値段と機能をチェックします、もし中の一つが条件を満たすたら「Yes」を出力します。
-もし最後まで条件が満たすものがないなら「No」を出力します。
+この問題は全探索で答えることができます。基準を満たすものを見つけるだけです。  
+まずはPi>=Pjのものを探します。  
+そして条件を満たすの中でiのすべての機能を走査し、それらがすべてF[j]にあるかどうかを確認します。  
+最後に値段と機能をチェックします、もし中の一つが条件を満たすたら「Yes」を出力します。  
+もし最後まで条件が満たすものがないなら「No」を出力します。  
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -145,7 +145,7 @@ int main()
 ```
 ## E - Manga
 ### https://atcoder.jp/contests/adt_easy_20260302_2/tasks/abc271_c
-足りない巻を、余った本や後ろの大きな巻を売ることで補い、どこまで連続して読めるかを計算します。
+足りない巻を、余った本や後ろの大きな巻を売ることで補い、どこまで連続して読めるかを計算します。  
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
