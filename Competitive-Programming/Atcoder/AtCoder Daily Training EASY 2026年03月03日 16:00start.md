@@ -1,16 +1,16 @@
 # AtCoder Daily Training EASY 2026/03/03 16:00start
 <details>
   <summary>(今回の感想)</summary>
-  今日のDaily Training EASYもAKしました。
-  でも時間がたくさん掛かりました。
-  第A問題は13分掛かって、大体いい方法が見つかりませんでした。
+  今日のDaily Training EASYもAKしました。  
+  でも時間がたくさん掛かりました。  
+  第A問題は13分掛かって、大体いい方法が見つかりませんでした。  
 </details>
 
 ## A - Jiro
 ### https://atcoder.jp/contests/adt_easy_20260303_1/tasks/abc371_a
-この問題、僕は脳死で解きました。
-次回からは、各キャラクターの勝利数をカウントしてランキングを作るような、
-より拡張性のあるコードを書きたいです。
+この問題、僕は脳死で解きました。  
+次回からは、各キャラクターの勝利数をカウントしてランキングを作るような、  
+より拡張性のあるコードを書きたいです。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -35,7 +35,7 @@ int main()
     return 0;
 }
 ```
-改善後のコード
+改善後のコード  
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -71,9 +71,9 @@ int main()
 ```
 ## B - New Scheme
 ### https://atcoder.jp/contests/adt_easy_20260303_1/tasks/abc308_a
-この問題は簡単です。
-一つ一つでチェックします。もし問題あれば「No」を出力します。
-最後までないと「Yes」を出力します。
+この問題は簡単です。  
+一つ一つでチェックします。もし問題あれば「No」を出力します。  
+最後までないと「Yes」を出力します。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -117,7 +117,7 @@ int main()
 ```
 ## C - Sum of Digits Sequence
 ### https://atcoder.jp/contests/adt_easy_20260303_1/tasks/abc427_b
-特殊なアルゴリズムは不要。問題文の数式をそのまま適用するだけで解ける問題です。
+特殊なアルゴリズムは不要。問題文の数式をそのまま適用するだけで解ける問題です。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -150,7 +150,7 @@ int main()
 ```
 ## D - Subscribers
 ### https://atcoder.jp/contests/adt_easy_20260303_1/tasks/abc304_b
-この問題も特殊なアルゴリズムは不要。問題文の数式をそのまま適用するだけで解ける問題です。
+この問題も特殊なアルゴリズムは不要。問題文の数式をそのまま適用するだけで解ける問題です。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -179,8 +179,8 @@ int main()
 ## E - Snake Queue
 ### https://atcoder.jp/contests/adt_easy_20260303_1/tasks/abc389_c
 一見すると「Queue」を用いる問題のように見えますが、
-実際にシミュレーションを行うと計算量やメモリ消費が膨大になってしまいます。
-しかし、この問題は累積和の考え方に変換することで、効率的に解くことが可能です。
+実際にシミュレーションを行うと計算量やメモリ消費が膨大になってしまいます。  
+しかし、この問題は累積和の考え方に変換することで、効率的に解くことが可能です。  
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
