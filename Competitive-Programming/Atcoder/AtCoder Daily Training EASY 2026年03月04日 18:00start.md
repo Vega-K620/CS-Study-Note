@@ -1,14 +1,14 @@
 # AtCoder Daily Training EASY 2026/03/04 18:00start
 <details>
   <summary>(今回の感想)</summary>
-  今日は用事があって本番には参加できず、後から解きました。
-  AKでしたが。途中ケアレスミスが多いすぎます。
+  今日は用事があって本番には参加できず、後から解きました。  
+  AKでしたが。途中ケアレスミスが多いすぎます。  
 </details>
 
 ## A - Swap Odd and Even
 ### https://atcoder.jp/contests/adt_easy_20260304_2/tasks/abc293_a
-この問題は文字列操作の問題です。
-僕はペア（隣り合う文字）ごとの入れ替えました。
+この問題は文字列操作の問題です。  
+僕はペア（隣り合う文字）ごとの入れ替えました。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -25,7 +25,7 @@ int main()
   return  0;
 }
 ```
-後から気づいたのですが、swap 関数を使う方法もあります。
+後から気づいたのですが、swap 関数を使う方法もあります。  
 ```cpp
 for (int i = 0; i < len; i += 2) {
     swap(s[i], s[i+1]);
@@ -33,8 +33,8 @@ for (int i = 0; i < len; i += 2) {
 ```
 ## B - N-choice question
 ### https://atcoder.jp/contests/adt_easy_20260304_2/tasks/abc300_a
-この問題は線形探索の基本問題です。
-配列を順番に走査して、条件に合う要素を探します。
+この問題は線形探索の基本問題です。  
+配列を順番に走査して、条件に合う要素を探します。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -61,9 +61,9 @@ int main()
 ```
 ## C - Pizza
 ### https://atcoder.jp/contests/adt_easy_20260304_2/tasks/abc238_b
-この問題シミュレーションです。累積和的な考え方です。
-回転角度を累積させて、360で割った余りをとるのがポイントです。
-実装自体は単純ですが、コーナーケース（0度や360度）の扱いに注意が必要です。
+この問題シミュレーションです。累積和的な考え方です。  
+回転角度を累積させて、360で割った余りをとるのがポイントです。  
+実装自体は単純ですが、コーナーケース（0度や360度）の扱いに注意が必要です。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -96,7 +96,7 @@ int main()
 ## D - Perfect String
 ### https://atcoder.jp/contests/adt_easy_20260304_2/tasks/abc249_b
 この問題は複数の条件（大文字の有無、小文字の有無、重複の有無）
-をすべて同時に満たしているかを正確に判定する。
+をすべて同時に満たしているかを正確に判定する。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -146,8 +146,8 @@ int main()
 ```
 ## E - abc285_brutmhyhiizp
 ### https://atcoder.jp/contests/adt_easy_20260304_2/tasks/abc285_c
-Excelの列番号のように「0」がない26進法の変換。
-累乗（pow）を使わず、左から順に26倍して足すことで精度と速度を確保する。
+Excelの列番号のように「0」がない26進法の変換。  
+累乗（pow）を使わず、左から順に26倍して足すことで精度と速度を確保する。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
