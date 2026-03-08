@@ -1,11 +1,11 @@
 # AtCoder Daily Training EASY 2026/03/05 18:00start
 <details>
   <summary>(今回の感想)</summary>
-  今日の分もACしました！スキルが向上しました！まだまだ伸びしろはあるので、これからも頑張ります。
+  今日の分もACしました！スキルが向上しました！まだまだ伸びしろはあるので、これからも頑張ります。  
 </details>
 ## A - Adjacent Product
 ### https://atcoder.jp/contests/adt_easy_20260305_2/tasks/abc346_a
-A問題はループしながら、同時に結果を出して出力します。
+A問題はループしながら、同時に結果を出して出力します。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -29,7 +29,7 @@ int main()
 ```
 ## B - Water Station
 ### https://atcoder.jp/contests/adt_easy_20260305_2/tasks/abc305_a
-この問題、僕は一の位の数字を見て、一番近い 5 の倍数を判断しました。
+この問題、僕は一の位の数字を見て、一番近い 5 の倍数を判断しました。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -54,8 +54,8 @@ int main()
     return 0;
 }
 ```
-後で、もっと簡単な方法に気づきました。
-(n+2)/5*5は答えです。
+後で、もっと簡単な方法に気づきました。  
+(n+2)/5*5は答えです。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -70,7 +70,7 @@ int main()
 ```
 ## C - Go Straight and Turn Right
 ### https://atcoder.jp/contests/adt_easy_20260305_2/tasks/abc244_b
-この問題は2つの配列で方向を保持します。そして次の座標が計算できます。
+この問題は2つの配列で方向を保持します。そして次の座標が計算できます。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -105,7 +105,7 @@ int main()
 ```
 ## D - Discord
 ### https://atcoder.jp/contests/adt_easy_20260305_2/tasks/abc303_b
-2次元配列に「仲間」の状態を保存し、それを更新してから、最後に状態を確認して答えを出力します。
+2次元配列に「仲間」の状態を保存し、それを更新してから、最後に状態を確認して答えを出力します。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -151,7 +151,7 @@ int main()
 ```
 ## E - Changing Jewels
 ### https://atcoder.jp/contests/adt_easy_20260305_2/tasks/abc260_c
-問題の条件に従って、高い方から低い方へ走査しながら計算し、結果を出力します。
+問題の条件に従って、高い方から低い方へ走査しながら計算し、結果を出力します。  
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
