@@ -1,5 +1,5 @@
 # AtCoder Beginner Contest 449
-今日のABCは問題A-Dを解きました。今夜は遅いだからまずA-Cを書きます。
+今日のABCは問題A-Dを解きました。
 ## A - π
 ### https://atcoder.jp/contests/abc449/tasks/abc449_a
 この問題は逆余弦関数を用いて円周率を求める。
@@ -89,6 +89,59 @@ int main()
 
     cout<<ans<<"\n";
     
+    return 0;
+}
+```
+## D - Make Target 2
+### https://atcoder.jp/contests/abc449/tasks/abc449_d
+各 $x$ について、$|y|$ との大小関係（だいしょうかんけい）で $max$ の値が変わるため、$y$ の範囲を 3 つのセクション（$y < -|x|$, $-|x| \le y \le |x|$, $y > |x|$）に分割（ぶんかつ）して計算する。
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+
+using ll = long long;
+
+int main()
+{
+    cin.tie(NULL)->sync_with_stdio(false);
+    ll L,R,D,U;
+    if (!(cin>>L>>R>>D>>U))return 0;
+
+    ll total=0;
+    for(ll x=L;x<=R;++x)
+    {
+        ll ax=abs(x);
+        
+        ll mid_l=max(D,-ax);
+        ll mid_r=min(U,ax);
+        if(mid_l<=mid_r)
+        {
+            if(ax%2==0)
+            {
+                total+=(mid_r-mid_l+1);
+            }
+        }
+
+        ll up_l=max(D,ax+1),up_r=U;
+        if (up_l<=up_r)
+        {
+            ll first=(up_l%2==0) ? up_l : up_l+1;
+            ll last=(up_r%2==0) ? up_r : up_r-1;
+            if(first<=last)
+            total+=(last-first)/2+1;
+        }
+
+        ll down_l=D,down_r=min(U,-ax-1);
+        if(down_l<=down_r)
+        {
+            ll first=(down_l%2==0) ? down_l : down_l+1;
+            ll last=(down_r%2==0) ? down_r : down_r-1;
+            if(first<=last)
+            total+=(last-first)/2+1;
+        }
+    }
+
+    cout<<total<<"\n";
     return 0;
 }
 ```
