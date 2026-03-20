@@ -154,3 +154,34 @@ int main()
 ### https://atcoder.jp/contests/adt_all_20260320_1/tasks/abc235_c
 この問題は「map」と「vector」を組み合わせて活用します。  
 数字 $x$ を key とし、その数字が出現したすべての位置を vector に記録します。クエリごとに vector のサイズを確認して、直接答えを出します。
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    cin.tie(NULL)->sync_with_stdio(false);
+    long long n,q;
+    cin>>n>>q;
+    map<long long,vector<int>> num;
+    for(long long i=0;i<n;i++)
+    {
+        long long temp;
+        cin>>temp;
+        num[temp].push_back(i+1);
+    }
+    for(long long i=0;i<q;i++)
+    {
+        long long x,k;
+        cin>>x>>k;
+        if(num.count(x)&&num[x].size()>=k)
+        {
+            cout<<num[x][k-1]<<"\n";
+        }
+        else
+        {
+            cout<<-1<<"\n";
+        }
+    }
+    return 0;
+}
+```
