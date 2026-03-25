@@ -63,7 +63,7 @@ int main()
 ```
 ## D - Inverse Prefix Sum
 ### https://atcoder.jp/contests/adt_all_20260324_1/tasks/abc280_b
-問題文で $ S_N-S_(N-1)=A_N $ が知っているからSを走査して答えを出力します。
+問題文で $ S_N-S_{(N-1)}=A_N $ が知っているからSを走査して答えを出力します。
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -83,7 +83,7 @@ int main()
 ``` 
 ## E - 343
 ### https://atcoder.jp/contests/adt_all_20260324_1/tasks/abc343_c
-Nは $10^18$ 以下の正整数そして $K^3$ は $K=2097151$ のときlong longより多いですから、Kを走査して $K^3$ に回文を判断して。最後一番大きいの答えを出力します。
+Nは $10^{18}$ 以下の正整数そして $K^3$ は $K=2097151$ のときlong longより多いですから、Kを走査して $K^3$ に回文を判断して。最後一番大きいの答えを出力します。
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
