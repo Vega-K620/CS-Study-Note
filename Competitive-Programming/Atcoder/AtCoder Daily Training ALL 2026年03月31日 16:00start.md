@@ -106,7 +106,7 @@ int main()
 ```
 ## G - Domino Covering XOR
 ### https://atcoder.jp/contests/adt_all_20260331_1/tasks/abc407_d
-この問題の数字量が多くないで、「dfs」で解けます。ドミノの置きかどうかを全探索して、一番大きいの答えが見つけます。
+この問題の制約が小さいので、「dfs」で解けます。ドミノの置きかどうかを全探索して、一番大きいの答えが見つけます。
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
