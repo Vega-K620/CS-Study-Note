@@ -1,9 +1,6 @@
 # AtCoder Beginner Contest 447
-<details>
-<summary>(今日の感想)</summary>
-  今日のコンテストは少し残念と思っています、別の用事があるのでA問題だけいりました。
-  で初めてのコンテストで３分間掛かってA問題を解決したはいい始まると思います。
-</details>
+今日のコンテストは少し残念と思っています、別の用事があるのでA問題だけいりました。
+で初めてのコンテストで３分間掛かってA問題を解決したはいい始まると思います。
 
 ## A - Seats 2
 ### https://atcoder.jp/contests/abc447/tasks/abc447_a
