@@ -1,7 +1,8 @@
 # AtCoder Daily Training ALL 2026/04/03 16:00start
-今日のトレーニングはE-Gを解きました。今地下鉄に乗っていますのでまず「コード」をアップデートして、家に帰って感想を追加する。
+今日のトレーニングはE-Gを解きました。
 ## E - Minimum Glutton
 ### https://atcoder.jp/contests/adt_all_20260403_1/tasks/abc364_c
+料理の個数を最小にするためには、甘さまたは塩辛さがより早く合計値を上回るように、それぞれを大きい順に並べるのが最適です。甘さの合計が $X$ を超える最短の手順と、塩辛さの合計が $Y$ を超える最短の手順を独立に考え、そのうち小さい方の値が答えになります。
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -51,6 +52,7 @@ int main()
 ```
 ## F - Yamanote Line Game
 ### https://atcoder.jp/contests/adt_all_20260403_1/tasks/abc244_c
+高橋君は先手ですから、必ず勝ちます。既に出た数字を「unordered_set」で管理し、自分の手番ではまだ使われていない最小の数字を宣言する、という操作を繰り返すことで、確実に勝利できます。
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -82,6 +84,7 @@ int main()
 ```
 ## G - Coprime 2
 ### https://atcoder.jp/contests/adt_all_20260403_1/tasks/abc215_d
+$A_i$ を素因数分解して、出てきた素因数の倍数をエラトステネスの篩のように消していくことで、$O(N\sqrt{A_{max}} + M \log \log M)$ 程度の計算量で解くことができました。GCDを愚直に計算せず、素数に着目するのがポイントですね。
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
