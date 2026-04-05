@@ -84,7 +84,7 @@ int main()
 ```
 ## G - Coprime 2
 ### https://atcoder.jp/contests/adt_all_20260403_1/tasks/abc215_d
-$A_i$ を素因数分解して、出てきた素因数の倍数をエラトステネスの篩のように消していくことで、$O(N\sqrt{A_{max}} + M \log \log M)$ 程度の計算量で解くことができました。GCDを愚直に計算せず、素数に着目するのがポイントですね。
+$A_i$ を素因数分解して、出てきた素因数の倍数をエラトステネスの篩のように消していくことで、  $O(N\sqrt{A_{max}} + M \log \log M)$ 程度の計算量で解くことができました。GCDを愚直に計算せず、素数に着目するのがポイントですね。
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
