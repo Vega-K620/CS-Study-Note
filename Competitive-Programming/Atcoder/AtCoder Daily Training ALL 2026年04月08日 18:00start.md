@@ -3,7 +3,7 @@
 ## E - Monotonically Increasing
 ### https://atcoder.jp/contests/adt_all_20260408_2/tasks/abc263_c
 この問題は「DFS」を使って答えが出てきます。でもその中で僕は小さいミスがあります。「DFS」中の「FOR」の開始場所は「0」じゃなくて「最後出力の数字」です。
-複雑度: $ $O(C_M^N \cdot M)$ $
+複雑度: $O(C_M^N \cdot M)$
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
