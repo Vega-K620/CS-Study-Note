@@ -4,6 +4,7 @@
 codeforcesも1600+のratingに着きました。
 久しぶりのAtcoderのABCコンテストは前より簡単になりました。
 それは練習の成果だと思います。
+今日から前に参加したコンテストのメモを一つ一つで書きます。
 ## A - Not X
 ### https://atcoder.jp/contests/abc474/tasks/abc474_a
 これは簡単のチェックイン問題です。
