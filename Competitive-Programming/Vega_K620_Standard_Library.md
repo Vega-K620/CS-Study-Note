@@ -1,3 +1,91 @@
+<style>
+/* 1. 基础全局设置 */
+body {
+    column-count: 1 !important;
+    font-size: 10pt; 
+    line-height: 1.05; 
+    margin: 0 auto;
+    font-family: "Segoe UI", "Arial", sans-serif;
+    color: #000 !important; /* 全局纯黑 */
+}
+
+/* 2. 双面打印页边距优化 */
+@page {
+    margin: 1.2cm 1.0cm !important; 
+}
+
+/* 3. 标题系统：黑白打印增强版 */
+h1, h2, h3, h4, h5, h6 {
+    margin: 0 !important;
+    display: block !important;
+    break-after: avoid !important;
+    font-weight: 700 !important; /* 标题加到最粗 */
+    letter-spacing: 0.2px;
+    border: 1px solid #000 !important; /* 给标题加细黑边框，防止黑白打印边缘模糊 */
+}
+
+/* 顶层模块：黑底白字（黑白打印最醒目） */
+h1, h2 {
+    font-size: 12pt !important;
+    background-color: #000 !important;
+    color: #fff !important;
+    padding: 2px 6px !important;
+}
+
+/* 中间层级：浅灰底黑字 + 粗左边框 */
+h3 {
+    font-size: 11pt !important;
+    background-color: #e0e0e0 !important;
+    color: #000 !important;
+    padding: 2px 6px !important;
+    border-left: 6px solid #000 !important;
+}
+
+/* 底层小标题：白底黑字 + 粗下划线（##### 和 ######） */
+h4, h5, h6 {
+    font-size: 10.5pt !important; 
+    background-color: #f5f5f5 !important;
+    color: #000 !important;
+    padding: 2px 6px !important;
+    border-left: 6px solid #444 !important;
+    border-bottom: 2px solid #000 !important; /* 强化下划线，方便视觉切割 */
+}
+
+/* 4. 代码块：解决注释看不清的问题 */
+pre {
+    margin: 0 0 4px 0 !important; 
+    padding: 3px 2px 3px 12px !important; 
+    font-family: "JetBrains Mono", "Consolas", monospace;
+    font-size: 7.8pt !important;
+    
+    letter-spacing: 0.2px !important; 
+    line-height: 1.2 !important;
+    
+    background-color: #fff !important; /* 代码背景纯白，对比度最高 */
+    border: 1px solid #000 !important; /* 黑色细边框 */
+    border-top: none !important; 
+
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    text-indent: -10px; 
+    border-left: 4px solid #000 !important; 
+
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+}
+
+/* 重点：强制代码中的灰色/浅色文字（注释）变为纯黑，并加斜体 */
+pre span[style*="color"], 
+pre .comment, 
+pre .hljs-comment {
+    color: #000 !important; /* 注释强制变黑 */
+    font-style: italic !important; /* 用斜体区分注释 */
+    opacity: 1 !important;
+}
+
+/* 消除间距干扰 */
+p, li { margin: 0 !important; padding: 0 !important; }
+</style>
 # Vega_K620_Standard_Library
 ## c++14
 ### 备忘录
@@ -32,7 +120,14 @@ map / unordered_map map<string, int> mp;
 特点：键值对映射，mp["key"] = value 直接赋值或修改
 
 3. 容器适配器 (Container Adapters)
-priority_queue priority_queue<int> pq;
+priority_queue priority_queue<int> pq;默认为大根堆
+自定义比较逻辑需要写仿函数
+struct cmp{
+    bool operator()(const T &a,const T &b)
+    {
+        比较逻辑（）
+    }
+};
 pq.push(x), pq.pop(), pq.top() : 入队/出队/看堆顶
 priority_queue<int, vector<int>, greater<int>> pq; : 小顶堆
 deque deque<int> dq;
@@ -43,6 +138,8 @@ dq.push_back(), dq.pop_back() : 尾部增删
 排序与反转
 sort(v.begin(), v.end()) : 升序排序
 sort(v.begin(), v.end(), greater<int>()) : 降序排序
+is_sorted(v,begin(),v.end()) : 是否已升排
+is_sorted(v,begin(),v.end(),greater<int>()) : 是否已降排
 reverse(v.begin(), v.end()) : 翻转
 二分查找（必须在有序序列上使用）
 lower_bound(v.begin(), v.end(), x) : 返回第一个 >= x 的迭代器
@@ -50,7 +147,8 @@ upper_bound(v.begin(), v.end(), x) : 返回第一个 > x 的迭代器
 
 其他
 __gcd(a, b) : 最大公约数 (GCC 内置)
-next_permutation(v.begin(), v.end()) : 生成下一个全排列
+next_permutation(v.begin(), v.end()) : 生成下一个全排列(需要升序排好序使用)
+prev_permutation(v.begin(),v.end()) : 生成上一个全排列(需要降序排好序使用)
 max_element(v.begin(), v.end()) : 返回指向最大值的迭代器
 class与struct:
 使用:
@@ -224,6 +322,7 @@ int main()
 #### Fenwick Tree 树状数组(也常称为BIT)
 ##### 2d_bit 二维树状数组
 ```cpp
+// (v & -v)为v的lowbit
 // 二维树状数组实现
 // 以下实现适用于：单点更新 (Point updates) 和 区间查询 (Range queries)
 
@@ -231,7 +330,7 @@ const long long MAX = 1005; // 最大矩阵大小，根据题目要求修改
 long long bit[MAX][MAX];    // 树状数组存储空间
 
 // 时间复杂度: O(log N * log M) 
-// 功能：在坐标 (x, y) 处增加 val
+// 功能：在坐标 (x, y) 处增加 val 如果需要覆盖需要先读原数 (old) 然后增加 (target-old)
 void update(long long x, long long y, long long val)
 {
     while (x < MAX)
@@ -592,23 +691,41 @@ int rmq[LIM][MAX];      // ST 表主阵：rmq[i][j] 表示从 j 开始长度为 
 // 时间复杂度: O(N log N)
 void build_rmq()
 {
-    int n = inp.size();
-    // 1. 预处理 log 数组 (递推实现)
-    for(int i = 2; i <= n; ++i) lg[i] = lg[i/2] + 1;
-    // 2. 初始化：长度为 2^0 (即长度为 1) 的区间最值就是原数组值
-    p2[0] = 1;
+    // 1. 初始化：长度为 2^0 (即长度为 1) 的区间最值就是原数组值
     for(int i = 0; i < n; ++i) rmq[0][i] = inp[i];
-    // 3. 动态规划填表
+    // 2. 动态规划填表
     for(int i = 1; i <= lg[n]; ++i)
     {
-        p2[i] = 1 << i;
         int x = n - p2[i]; // 当前层循环的上界
         int y = p2[i-1];   // 上一层的步长 (2^(i-1))
         for(int j = 0; j <= x; ++j)
         {
             // 区间 [j, j + 2^i - 1] 由两个长度为 2^(i-1) 的子区间合并而来
             rmq[i][j] = max(rmq[i-1][j], rmq[i-1][j + y]);
+            //如果需要改维护内容，只需要改此处与查询处的函数
+            //可以维护有等幂性的处理：gcd,min,max,x&x,x|x,lcm
         }
+    }
+}
+
+// 时间复杂度：O(log N)
+// 功能：在st表末尾插入新元素
+void st_push_back(int val)
+{
+    inp.push_back(val);
+    int n=inp.size();
+    int idx=n-1;
+    
+    rmq[0][idx]=val;
+    
+    int max_h=lg[n];
+    for(int i=1;i<=max_h;i++)
+    {
+        int j=idx-p2[i]+1;
+        if(j<0) break;
+        
+        int y=p2[i-1];
+        rmq[i][j]=max(rmq[i-1][j],rmq[i-1][j+y]);
     }
 }
 
@@ -623,71 +740,17 @@ int query(int i, int j)
     // 核心原理：两个重叠的 2^x 区间可以完全覆盖 [i, j]
     return max(rmq[x][i], rmq[x][j - p2[x] + 1]);
 }
-```
-###### seg_tree 标准线段树（单点修改，区间查询）
-```cpp
-// 基础线段树实现 - 区间最大/最小值查询
-// 假设说明：下标从 1 开始 (1-based indexing)
-// 空间复杂度: O(n) —— 实际上通常需要开 4 倍空间
 
-const int MAX = 1e5 + 5;
-const int LIM = 4e5 + 5;    // 线段树数组通常建议开 MAX 的 4 倍
-const int INF = 1e9;    // 用来代替 INT_MIN，防止极端数据下爆 int
-
-int inp[MAX]; // 原始数组
-int seg[LIM]; // 线段树数组
-
-// 时间复杂度: O(n)
-// 功能：递归构建线段树
-void build(int t, int i, int j)
+// 预处理lg数组和p2数组
+lg[1]=0;
+for(int i=2;i<MAX;i++)
 {
-    if (i == j)
-    {
-        seg[t] = inp[i]; // 叶子节点存放原始值
-        return;
-    }
-    int mid = (i + j) / 2;
-    build(t * 2, i, mid);     // 构建左子树
-    build(t * 2 + 1, mid + 1, j); // 构建右子树
-    // 如果需要更改维护内容就修改这里，可以改为gcd，min等幂等性的
-    // 如果维护区间和改为seg[t]=seg[t*2]+seg[t*2+1]) 
-    // 如果要维护区间积要注意是否需要取模
-    seg[t] = max(seg[t * 2], seg[t * 2 + 1]); // 合并节点：取最大值
+    lg[i]=lg[i/2]+1;
 }
-
-// 功能：查询区间 [l, r] 的最大值（均包含边界）
-// 时间复杂度: O(log n)
-int query(int t, int i, int j, int l, int r)
+p2[0]=1;
+for(int i=1;i<LIM;i++)
 {
-    // 如果需要修改功能返回值需要更改，min返回INF，gcd返回0，sum返回0，积返回1
-    if (i > r || j < l) return -INF; // 如果当前区间完全不在查询范围内，返回极小值
-    if (l <= i && j <= r) return seg[t]; // 如果当前区间完全被包含在查询范围内，直接返回节点值
-    
-    int mid = (i + j) / 2;
-    int u = query(t * 2, i, mid, l, r);
-    int v = query(t * 2 + 1, mid + 1, j, l, r);
-    // 如果改成区间和，这里必须换成 return u + v;
-    return max(u, v); // 返回左右子树查询结果中的较大值
-}
-
-// 功能：将位置 p 的值修改为 v
-// 时间复杂度: O(log n)
-void update(int t, int i, int j, int p, int v)
-{
-    if (i == j)
-    {
-        seg[t] = v; // 修改叶子节点
-        return;
-    }
-    int mid = (i + j) >> 1;
-    if (p <= mid)
-    update(t * 2, i, mid, p, v);
-    else
-    update(t * 2 + 1, mid + 1, j, p, v);
-    // 如果需要更改维护内容就修改这里，可以改为gcd，min等幂等性的
-    // 如果维护区间和改为seg[t]=seg[t*2]+seg[t*2+1]) 
-    // 如果要维护区间积要注意是否需要取模
-    seg[t] = max(seg[t * 2], seg[t * 2 + 1]); // 向上更新父节点 (Push Up)
+    p2[i]=1<<i;
 }
 ```
 ##### 2D 二维
@@ -783,6 +846,294 @@ int query(int L1, int R1, int L2, int R2)
     int u = max(rmq[A][B][L1][R1], rmq[A][B][L2 - P2A + 1][R1]);
     int v = max(rmq[A][B][L1][R2 - P2B + 1], rmq[A][B][L2 - P2A + 1][R2 - P2B + 1]);
     return max(u, v);
+}
+```
+```cpp
+//min，max，gcd，lcm维护方法，着重注意lcm维护方法
+#include<bits/stdc++.h>
+using namespace std;
+#define int long long
+
+const int MAX=2e5+5;
+const int LIM=25;
+
+vector<int> inp;
+int lg[MAX];
+int p2[LIM];
+int rmq_min[LIM][MAX],rmq_max[LIM][MAX],rmq_gcd[LIM][MAX],rmq_lcm[LIM][MAX];
+
+void build_rmq()
+{
+    int n=inp.size();
+    for(int i=0;i<n;i++)
+    {
+        rmq_min[0][i]=inp[i];
+        rmq_max[0][i]=inp[i];
+        rmq_gcd[0][i]=inp[i];
+        rmq_lcm[0][i]=inp[i];
+    }
+    for(int i=1;i<=lg[n];i++)
+    {
+        int x=n-p2[i];
+        int y=p2[i-1];
+        for(int j=0;j<=x;j++)
+        {
+            rmq_min[i][j]=min(rmq_min[i-1][j],rmq_min[i-1][j+y]);
+            rmq_max[i][j]=max(rmq_max[i-1][j],rmq_max[i-1][j+y]);
+            rmq_gcd[i][j]=gcd(rmq_gcd[i-1][j],rmq_gcd[i-1][j+y]);
+            rmq_lcm[i][j]=min(1000000000LL,rmq_lcm[i-1][j]/gcd(rmq_lcm[i-1][j],rmq_lcm[i-1][j+y])*rmq_lcm[i-1][j+y]);
+        }
+    }
+}
+
+int query_min(int i,int j)
+{
+    if(i>j)return -1;
+    int x=lg[j-i+1];
+    return min(rmq_min[x][i],rmq_min[x][j-p2[x]+1]);
+}
+
+int query_max(int i,int j)
+{
+    if(i>j)return -1;
+    int x=lg[j-i+1];
+    return max(rmq_max[x][i],rmq_max[x][j-p2[x]+1]);
+}
+
+int query_gcd(int i,int j)
+{
+    if(i>j)return -1;
+    int x=lg[j-i+1];
+    return gcd(rmq_gcd[x][i],rmq_gcd[x][j-p2[x]+1]);
+}
+
+int query_lcm(int i,int j)
+{
+    int x=lg[j-i+1];
+    int a=rmq_lcm[x][i];
+    int b=rmq_lcm[x][j-p2[x]+1];
+    return min(1000000000LL,a/gcd(a,b)*b);
+}
+
+void solve()
+{
+    int n,q;
+    cin>>n>>q;
+    inp.clear();
+    for(int i=0;i<n;i++)
+    {
+        int temp;
+        cin>>temp;
+        inp.push_back(temp);
+    }
+    build_rmq();
+    while(q--)
+    {
+        int l,r;
+        cin>>l>>r;
+        cout<<query_max(l-1,r-1)<<" "<<query_min(l-1,r-1)<<" "<<query_gcd(l-1,r-1)<<" "<<query_lcm(l-1,r-1)<<"\n";
+    }
+}
+
+signed main()
+{
+    cin.tie(NULL)->sync_with_stdio(false);
+    lg[1]=0;
+    for(int i=2;i<MAX;i++)
+    {
+        lg[i]=lg[i/2]+1;
+    }
+    p2[0]=1;
+    for(int i=1;i<LIM;i++)
+    {
+        p2[i]=1<<i;
+    }
+    int t=1;
+    cin>>t;
+    while(t--)
+    {
+        solve();
+    }
+}
+```
+###### seg_tree 标准线段树（单点修改，区间查询）
+```cpp
+// 基础线段树实现 - 区间最大/最小值查询
+// 假设说明：下标从 1 开始 (1-based indexing)
+// 空间复杂度: O(n) —— 实际上通常需要开 4 倍空间
+// 如果要改维护内容需要同步修改建，改，查的逻辑
+
+const int MAX = 1e5 + 5;
+const int LIM = 4e5 + 5;    // 线段树数组通常建议开 MAX 的 4 倍
+const int INF = 1e9;    // 用来代替 INT_MIN，防止极端数据下爆 int
+
+int inp[MAX]; // 原始数组
+int seg[LIM]; // 线段树数组
+
+// 时间复杂度: O(n)
+// 功能：递归构建线段树
+void build(int t, int i, int j)//t为线段树根节点，i为数组的左边界1，j为数组的右边界n
+{
+    if (i == j)
+    {
+        seg[t] = inp[i]; // 叶子节点存放原始值
+        return;
+    }
+    int mid = (i + j) / 2;
+    build(t * 2, i, mid);     // 构建左子树
+    build(t * 2 + 1, mid + 1, j); // 构建右子树
+    // 如果需要更改维护内容就修改这里，可以改为gcd，min等幂等性的
+    // 如果维护区间和改为seg[t]=seg[t*2]+seg[t*2+1]) 
+    // 如果要维护区间积要注意是否需要取模
+    seg[t] = max(seg[t * 2], seg[t * 2 + 1]); // 合并节点：取最大值
+}
+
+// 功能：查询区间 [l, r] 的最大值（均包含边界）
+// 时间复杂度: O(log n)
+// t固定为1，i固定为1，j固定为n，l为查询左边界，r为查询右边界
+int query(int t, int i, int j, int l, int r)
+{
+    // 如果需要修改功能返回值需要更改，min返回INF，gcd返回0，sum返回0，积返回1
+    if (i > r || j < l) return -INF; // 如果当前区间完全不在查询范围内，返回极小值
+    if (l <= i && j <= r) return seg[t]; // 如果当前区间完全被包含在查询范围内，直接返回节点值
+    
+    int mid = (i + j) / 2;
+    int u = query(t * 2, i, mid, l, r);
+    int v = query(t * 2 + 1, mid + 1, j, l, r);
+    // 如果改成区间和，这里必须换成 return u + v;
+    return max(u, v); // 返回左右子树查询结果中的较大值
+}
+
+// 功能：将位置 p 的值修改为 v
+// 时间复杂度: O(log n)
+void update(int t, int i, int j, int p, int v)
+{
+    if (i == j)
+    {
+        seg[t] = v; // 修改叶子节点
+        return;
+    }
+    int mid = (i + j) >> 1;
+    if (p <= mid)
+    update(t * 2, i, mid, p, v);
+    else
+    update(t * 2 + 1, mid + 1, j, p, v);
+    // 如果需要更改维护内容就修改这里，可以改为gcd，min等幂等性的
+    // 如果维护区间和改为seg[t]=seg[t*2]+seg[t*2+1]) 
+    // 如果要维护区间积要注意是否需要取模
+    seg[t] = max(seg[t * 2], seg[t * 2 + 1]); // 向上更新父节点 (Push Up)
+}
+```
+##### segtree_lazy 带懒惰标记(Lazy Tag)的线段树
+```cpp
+// 线段树实现：区间更新 (Range Update) 和 区间查询 (Range Query)
+// 使用 懒惰标记 (Lazy Propagation) 优化
+
+const int MAX=1e5+5;   // 原数组最大长度
+const int LIM=4e5+20;  // 线段树节点最大数量 (4 * MAX)
+const int INF=1e18;       // 【改动点 1】求最小值/最大值时需要定义无穷大/极小值
+
+int num[MAX];       // 原数组 (1-based)
+int seg[LIM];       // 线段树节点数组
+int lazy[LIM];      // 懒惰标记数组
+
+/* 
+ * 【改动点 2】合并左右儿子信息 (pushup)
+ * - 区间和: seg[u] = seg[u << 1] + seg[u << 1 | 1];
+ * - 区间最大值: seg[u] = max(seg[u << 1], seg[u << 1 | 1]);
+ * - 区间最小值: seg[u] = min(seg[u << 1], seg[u << 1 | 1]);
+ */
+void pushup(int u)
+{
+    seg[u]=seg[u<<1]+seg[u<<1|1]; 
+}
+
+/* 
+ * 【改动点 3】标记下传与应用 (pushdown)
+ * 注意：1. 标记对当前节点值的更新方式  2. 标记与旧标记的叠加逻辑
+ */
+void pushdown(int u,int l,int r)
+{
+    if(lazy[u]!=0)
+    { 
+        int mid=(l+r)>>1;
+        int tag=lazy[u];
+
+        // --- 应用给左儿子 ---
+        // 区间加+求和:   seg[u << 1] += tag * (mid - l + 1);  lazy[u << 1] += tag;
+        // 区间加+最值:   seg[u << 1] += tag;                 lazy[u << 1] += tag; (最值与区间长度无关)
+        // 区间覆盖+求和: seg[u << 1] = tag * (mid - l + 1);   lazy[u << 1] = tag;
+        // 区间覆盖+最值: seg[u << 1] = tag;                  lazy[u << 1] = tag;
+        seg[u<<1]+=tag*(mid-l+1);
+        lazy[u<<1]+=tag;
+
+        // --- 应用给右儿子 ---
+        seg[u<<1|1]+=tag*(r-mid);
+        lazy[u<<1|1]+=tag;
+
+        // --- 清空当前节点标记 ---
+        // 加法清为 0，乘法清为 1，覆盖/赋值清为无效值 (如 -1)
+        lazy[u]=0; 
+    }
+}
+
+void build(int u,int l,int r)
+{
+    // 【改动点 4】标记初始化（加法为 0，乘法为 1，覆盖为 -1 等）
+    lazy[u]=0; 
+    
+    if(l==r)
+    {
+        seg[u]=num[l];
+        return;
+    }
+    int mid=(l+r)>>1;
+    build(u<<1,l,mid);
+    build(u<<1|1,mid+1,r);
+    pushup(u);
+}
+
+void update(int u,int l,int r,int ql,int qr,int val) {
+    if(ql<=l&&r<=qr)
+    {
+        /* 
+         * 【改动点 5】区间完全包含时的直接更新逻辑
+         * - 区间加+求和:   seg[u] += val * (r - l + 1);  lazy[u] += val;
+         * - 区间加+最值:   seg[u] += val;                lazy[u] += val;
+         * - 区间覆盖+求和: seg[u] = val * (r - l + 1);   lazy[u] = val;
+         * - 区间覆盖+最值: seg[u] = val;                 lazy[u] = val;
+         */
+        seg[u]+=val*(r-l+1);
+        lazy[u]+=val;
+        return;
+    }
+    pushdown(u,l,r);
+    int mid=(l+r)>>1;
+    if(ql<=mid) update(u<<1,l,mid,ql,qr,val);
+    if(qr>mid) update(u<<1|1,mid+1,r,ql,qr,val);
+    pushup(u);
+}
+
+int query(int u,int l,int r,int ql,int qr)
+{
+    if(ql<=l&&r<=qr)
+    {
+        return seg[u];
+    }
+    pushdown(u,l,r);
+    int mid=(l+r)>>1;
+
+    /* 
+     * 【改动点 6】查询结果的初始化与合并
+     * - 求和:   res 初始为 0,    合并方式: res += left + right
+     * - 最小值: res 初始为 INF,  合并方式: res = min(res, query(...))
+     * - 最大值: res 初始为 -INF, 合并方式: res = max(res, query(...))
+     */
+    int res=0; 
+    if(ql<=mid) res+=query(u<<1,l,mid,ql,qr);
+    if(qr>mid) res+=query(u<<1|1,mid+1,r,ql,qr);
+    
+    return res;
 }
 ```
 #### Segment Tree 线段树进阶
@@ -944,207 +1295,6 @@ int main()
         printf("%d\n", ans);
     }
     return 0;
-}
-```
-##### segtree 标准线段树（单点修改，区间查询）
-```cpp
-// 线段树实现：单点更新 (Point update) 和 区间查询 (Range Query)
-// 这种结构比之前的更通用
-
-const int MAX = 1e5 + 5;
-const int LIM = 4e5 + 5; // 建议统一开 4 倍 MAX
-
-int a[MAX];   // 原始数组
-int seg[LIM]; // 线段树数组
-
-// 核心合并函数：决定线段树维护的是什么（和、最值、异或等）
-// 时间复杂度: O(1)
-int combine(int a, int b)
-{
-    return a + b; // 当前维护的是区间和
-}
-
-// 时间复杂度: O(n)
-// 功能：构建线段树
-void build(int t, int i, int j)
-{
-    if (i == j)
-    {
-        // 叶子节点：存储原始数组的信息
-        seg[t] = a[i];
-        return ;
-    }
-    int mid = (i + j) / 2;
-    build(t * 2, i, mid);
-    build(t * 2 + 1, mid + 1, j);
-    seg[t] = combine(seg[2 * t], seg[2 * t + 1]);
-}
-
-// 时间复杂度: O(log n)
-// 功能：单点修改，将下标为 x 的位置改为 y
-void update(int t, int i, int j, int x, int y)
-{
-    if (i > x || j < x)
-    {
-        return ;
-    }
-    if (i == j)
-    {
-        // 找到目标叶子节点，更新数值
-        seg[t] = y;
-        return ;
-    }
-    int mid = (i + j) / 2;
-    update(t * 2, i, mid, x, y);
-    update(t * 2 + 1, mid + 1, j, x, y);
-    // 更新完子节点后，回溯更新父节点
-    seg[t] = combine(seg[2 * t], seg[2 * t + 1]);
-}
-
-// 时间复杂度: O(log n)
-// 功能：查询区间 [l, r] 的结果
-int query(int t, int i, int j, int l, int r)
-{
-    // 增加一行容错判断，确保安全
-    if (l <= i && j <= r)
-    {
-        return seg[t];
-    }
-    // 1. 如果查询区间完全覆盖当前节点区间
-    if (l <= i && j <= r)
-    {
-        return seg[t];
-    }
-    int mid = (i + j) / 2;
-    // 2. 根据范围判断是去左子树、右子树，还是两边都去
-    if (l <= mid)
-    {
-        if (r <= mid)
-        {
-            // 目标完全在左半部分
-            return query(t * 2, i, mid, l, r);
-        }
-        else
-        {
-            // 跨越了中间，左右都要查，然后合并
-            int resL = query(t * 2, i, mid, l, r);
-            int resR = query(t * 2 + 1, mid + 1, j, l, r);
-            return combine(resL, resR);
-        }
-    }
-    else
-    {
-        // 目标完全在右半部分
-        return query(t * 2 + 1, mid + 1, j, l, r);
-    }
-}
-```
-##### segtree_lazy 带懒惰标记(Lazy Tag)的线段树
-```cpp
-// 线段树实现：区间更新 (Range Update) 和 区间查询 (Range Query)
-// 使用 懒惰标记 (Lazy Propagation) 优化
-
-const int MAX = 1e5 + 5;
-const int LIM = 4e5 + 5; // 建议开 4 倍空间
-
-int a[MAX];
-int seg[LIM];
-int lazy[LIM]; // 存储积攒的修改值
-bool push[LIM]; // 标记当前节点是否有未下传的修改
-
-// 核心合并函数：当前维护的是区间最大值 (Range Maximum)
-int combine(int a, int b)
-{
-    return max(a, b);
-}
-
-// 懒惰标记下传函数 (核心中的核心)
-void propagate(int t, int i, int j)
-{
-    if (push[t])
-    {
-        // 更新当前节点的值
-        seg[t] = seg[t] + lazy[t];
-        
-        // 如果不是叶子节点，将标记传给左右儿子
-        if (i != j)
-        {
-            push[t * 2] = true;
-            push[t * 2 + 1] = true;
-            lazy[t * 2] += lazy[t];
-            lazy[t * 2 + 1] += lazy[t];
-        }
-        
-        // 重置当前节点的标记
-        push[t] = false;
-        lazy[t] = 0;
-    }
-}
-
-// 时间复杂度: O(n)
-void build(int t, int i, int j)
-{
-    push[t] = false;
-    lazy[t] = 0;
-    if (i == j)
-    {
-        seg[t] = a[i];
-        return ;
-    }
-    int mid = (i + j) / 2;
-    build(t * 2, i, mid);
-    build(t * 2 + 1, mid + 1, j);
-    seg[t] = combine(seg[2 * t], seg[2 * t + 1]);
-}
-
-// 时间复杂度: O(log n)
-// 功能：将区间 [l, r] 内的每个数都增加 x
-void update(int t, int i, int j, int l, int r, int x)
-{
-    propagate(t, i, j); // 先下传旧标记
-    if (i > r || j < l)
-    {
-        return ;
-    }
-    if (l <= i && j <= r)
-    {
-        // 当前区间完全被目标区间包含，只打标记，不继续递归
-        lazy[t] += x;
-        push[t] = true;
-        propagate(t, i, j); // 立即更新当前节点值并准备下传
-        return ;
-    }
-    int mid = (i + j) / 2;
-    update(t * 2, i, mid, l, r, x);
-    update(t * 2 + 1, mid + 1, j, l, r, x);
-    seg[t] = combine(seg[2 * t], seg[2 * t + 1]);
-}
-
-// 时间复杂度: O(log n)
-int query(int t, int i, int j, int l, int r)
-{
-    propagate(t, i, j); // 查询前必须先下传标记，确保数据最新
-    if (i > r || j < l)
-    {
-        return -2e9; // 修正：既然是求 max，越界应返回一个极小值而不是 0
-    }
-    if (l <= i && j <= r)
-    {
-        return seg[t];
-    }
-    int mid = (i + j) / 2;
-    // 标准的区间查询逻辑
-    if (l <= mid)
-    {
-        if (r <= mid) return query(t * 2, i, mid, l, r);
-        else
-        {
-            int resL = query(t * 2, i, mid, l, r);
-            int resR = query(t * 2 + 1, mid + 1, j, l, r);
-            return combine(resL, resR);
-        }
-    }
-    else return query(t * 2 + 1, mid + 1, j, l, r);
 }
 ```
 #### Stacks 栈
@@ -2085,9 +2235,77 @@ long long query(int x1, int y1, int x2, int y2) {
     return sum_2D[x2][y2] + sum_2D[x1-1][y1-1] - sum_2D[x2][y1-1] - sum_2D[x1-1][y2];
 }
 ```
+#### 莫队
+##### 普通莫队
+```cpp
+// 作用：通过离线处理询问的处理顺序，优化询问的查询时间复杂度
+// 普通莫队的两种思路：
+// 1.经典排序
+// 2.奇偶排序
+// 经典排序：按照√n的块长度把l分为√n块，然后再对r排序，然后直接按这个顺序暴力滑动窗口
+// 奇偶排序：依然分为√n块，然后奇块中r从小到大排序，偶块中r从大到小排序，然后滑动窗口
+```
 ### Graphs 图论
 #### Basics 基础
-##### lca 最近公共祖先
+##### lca 最近公共祖先(基础版)
+```cpp
+// 树上点差分：统计某个节点被多少条路径覆盖
+// 使用公式：diff[a]++;diff[b]++;diff[lca]--;diff[fa[lca][0]]--;
+// 树上边差分：统计某条树边被多少条路径覆盖
+// 使用公式：diff[a]++;diff[b]++;diff[lca] -= 2;
+#include <iostream>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+const int MAXN = 1e5 + 5;
+const int LOGN = 20;
+
+vector<int> adj[MAXN];//记录路径
+int depth[MAXN];//记录深度
+int fa[MAXN][LOGN];
+
+// 1. DFS 预处理深度与 2^i 祖先
+void dfs(int u, int p, int d) {
+    depth[u] = d;
+    fa[u][0] = p;
+    for (int i = 1; i < LOGN; ++i) {
+        if (fa[u][i-1] != -1) {
+            fa[u][i] = fa[fa[u][i-1]][i-1];
+        } else {
+            fa[u][i] = -1;
+        }
+    }
+    for (int v : adj[u]) {
+        if (v != p) dfs(v, u, d + 1);
+    }
+}
+
+// 2. 倍增查询 LCA
+int lca(int u, int v) {
+    if (depth[u] < depth[v]) swap(u, v);
+    
+    // Step 1: 让 u 向上跳到与 v 相同的深度
+    for (int i = LOGN - 1; i >= 0; --i) {
+        if (depth[u] - (1 << i) >= depth[v]) {
+            u = fa[u][i];
+        }
+    }
+    
+    if (u == v) return u;
+    
+    // Step 2: u 和 v 一起向上跳，直到位于 LCA 的正下方
+    for (int i = LOGN - 1; i >= 0; --i) {
+        if (fa[u][i] != fa[v][i]) {
+            u = fa[u][i];
+            v = fa[v][i];
+        }
+    }
+    
+    return fa[u][0]; // 它们的父节点即为 LCA
+}
+```
+##### lca 最近公共祖先(终极版)
 ```cpp
 // 用于计算树中两个节点的 LCA（最近公共祖先）的程序
 // 也可以用于查找两个节点之间的路径
@@ -2224,6 +2442,125 @@ int main() {
     }
 
     return 0;
+}
+```
+##### lca 最近公共祖先(状压)
+```cpp
+// 增加val数组维护按位或，在求lca的同时可以将路径按位或的值返回
+// 按位与同样适用
+#include<bits/stdc++.h>
+using namespace std;
+#define int long long
+
+const int MAXN=1e5+5;
+const int LOGN=20;
+
+int n,m;
+vector<int> num;
+vector<vector<int>> adj;
+vector<vector<int>> fa,val;
+vector<int> dep;
+
+void dfs(int u,int p,int d)
+{
+    dep[u]=d;
+    fa[u][0]=p;
+    val[u][0]=(1LL<<num[u]);
+    for(int i=1;i<LOGN;i++)
+    {
+        if(fa[u][i-1]!=0)
+        {
+            fa[u][i]=fa[fa[u][i-1]][i-1];
+            val[u][i]=val[u][i-1]|val[fa[u][i-1]][i-1];
+        }
+        else
+        {
+            fa[u][i]=0;
+            val[u][i]=val[u][i-1];
+        }
+    }
+    for(int v:adj[u])
+    {
+        if(v!=p)dfs(v,u,d+1);
+    }
+}
+
+int lca(int u,int v)
+{
+    int ans=0;
+    if(dep[u]<dep[v])swap(u,v);
+    for(int i=LOGN-1;i>=0;i--)
+    {
+        if(dep[u]-(1<<i)>=dep[v])
+        {
+            ans|=val[u][i];
+            u=fa[u][i];
+        }
+    }
+    if(u==v)
+    {
+        ans|=val[u][0];
+        return ans;
+    }
+    for(int i=LOGN-1;i>=0;i--)
+    {
+        if(fa[u][i]!=fa[v][i])
+        {
+            ans|=val[u][i];
+            ans|=val[v][i];
+            u=fa[u][i];
+            v=fa[v][i];
+        }
+    }
+    ans|=val[u][0]|val[v][0]|val[fa[u][0]][0];
+    return ans;
+}
+
+void solve()
+{
+    int n,q;
+    cin>>n>>q;
+    num.assign(n+1,0);
+    adj.assign(n+1,vector<int> ());
+    fa.assign(MAXN,vector<int> (LOGN));
+    val.assign(MAXN,vector<int> (LOGN));
+    dep.assign(n+1,0);
+    for(int i=1;i<=n;i++)
+    {
+        cin>>num[i];
+    }
+    for(int i=1;i<=n-1;i++)
+    {
+        int a,b;
+        cin>>a>>b;
+        adj[a].push_back(b);
+        adj[b].push_back(a);
+    }
+    dfs(1,0,1);
+    for(int i=0;i<q;i++)
+    {
+        int a,b;
+        cin>>a>>b;
+        int temp=lca(a,b);
+        int cnt=0;
+        while(temp!=0)
+        {
+            cnt+=temp&1;
+            temp>>=1;
+        }
+        cout<<cnt<<"\n";
+    }
+}
+
+signed main()
+{
+    cin.tie(NULL)->sync_with_stdio(false);
+    int t=1;
+    cin>>t;
+    while(t--)
+    {
+        solve();
+    }
 }
 ```
 ##### topological_sort 拓扑排序
@@ -6202,6 +6539,141 @@ Matrix<int> power(Matrix<int> &a, long long n) {
 }
 ```
 ### Polynomials 多项式
+#### NTT
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MOD = 998244353;
+const int G = 3; // 998244353 的原根为 3
+
+// 快速幂
+long long power(long long base, long long exp) {
+    long long res = 1;
+    base %= MOD;
+    while (exp > 0) {
+        if (exp % 2 == 1) res = (res * base) % MOD;
+        base = (base * base) % MOD;
+        exp /= 2;
+    }
+    return res;
+}
+
+// 模逆元
+long long modInverse(long long n) {
+    return power(n, MOD - 2);
+}
+
+// NTT 核心函数 (invert 为 true 时执行 INTT 逆变换)
+void ntt(vector<long long>& a, bool invert) {
+    int n = a.size();
+    
+    // 位翻转置换 (Bit-reversal permutation)
+    for (int i = 1, j = 0; i < n; i++) {
+        int bit = n >> 1;
+        for (; j & bit; bit >>= 1) j ^= bit;
+        j ^= bit;
+        if (i < j) swap(a[i], a[j]);
+    }
+
+    // 蝶形变换
+    for (int len = 2; len <= n; len <<= 1) {
+        long long wlen = power(G, (MOD - 1) / len);
+        if (invert) wlen = modInverse(wlen);
+        for (int i = 0; i < n; i += len) {
+            long long w = 1;
+            for (int j = 0; j < len / 2; j++) {
+                long long u = a[i + j];
+                long long v = (a[i + j + len / 2] * w) % MOD;
+                a[i + j] = (u + v >= MOD ? u + v - MOD : u + v);
+                a[i + j + len / 2] = (u - v < 0 ? u - v + MOD : u - v);
+                w = (w * wlen) % MOD;
+            }
+        }
+    }
+
+    if (invert) {
+        long long n_inv = modInverse(n);
+        for (long long& x : a) x = (x * n_inv) % MOD;
+    }
+}
+
+// 两个多项式乘法入口
+vector<long long> multiply(vector<long long> const& a, vector<long long> const& b) {
+    vector<long long> fa(a.begin(), a.end()), fb(b.begin(), b.end());
+    int n = 1;
+    while (n < a.size() + b.size()) n <<= 1;
+    fa.resize(n); fb.resize(n);
+
+    ntt(fa, false);
+    ntt(fb, false);
+    for (int i = 0; i < n; i++) fa[i] = (fa[i] * fb[i]) % MOD;
+    ntt(fa, true);
+
+    fa.resize(a.size() + b.size() - 1);
+    return fa;
+}
+```
+#### FTT
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+using cd = complex<double>;
+const double PI = acos(-1);
+
+// FFT 核心函数 (invert 为 true 时执行 IFFT 逆变换)
+void fft(vector<cd>& a, bool invert) {
+    int n = a.size();
+
+    // 位翻转置换
+    for (int i = 1, j = 0; i < n; i++) {
+        int bit = n >> 1;
+        for (; j & bit; bit >>= 1) j ^= bit;
+        j ^= bit;
+        if (i < j) swap(a[i], a[j]);
+    }
+
+    // 蝶形变换
+    for (int len = 2; len <= n; len <<= 1) {
+        double ang = 2 * PI / len * (invert ? -1 : 1);
+        cd wlen(cos(ang), sin(ang));
+        for (int i = 0; i < n; i += len) {
+            cd w(1);
+            for (int j = 0; j < len / 2; j++) {
+                cd u = a[i + j];
+                cd v = a[i + j + len / 2] * w;
+                a[i + j] = u + v;
+                a[i + j + len / 2] = u - v;
+                w *= wlen;
+            }
+        }
+    }
+
+    if (invert) {
+        for (cd& x : a) x /= n;
+    }
+}
+
+// 两个多项式乘法入口
+vector<long long> multiply(vector<long long> const& a, vector<long long> const& b) {
+    vector<cd> fa(a.begin(), a.end()), fb(b.begin(), b.end());
+    int n = 1;
+    while (n < a.size() + b.size()) n <<= 1;
+    fa.resize(n); fb.resize(n);
+
+    fft(fa, false);
+    fft(fb, false);
+    for (int i = 0; i < n; i++) fa[i] *= fb[i];
+    fft(fa, true);
+
+    vector<long long> result(a.size() + b.size() - 1);
+    for (int i = 0; i < result.size(); i++) {
+        result[i] = round(fa[i].real()); // 取实部并四舍五入
+    }
+    return result;
+}
+```
 #### FTT 快速傅里叶变换(通常指FFT)
 ```cpp
 // FFT 实现 (基于 Stanford ACM 模板优化)
@@ -6349,6 +6821,31 @@ template<typename T, typename S> struct FFT {
         return ans;
     }
 };
+int main() {
+    // 1. 准备多项式系数，例如：
+    // A(x) = 1 + 2x + 3x^2
+    // B(x) = 4 + 5x + 6x^2
+    vector<long long> a = {1, 2, 3};
+    vector<long long> b = {4, 5, 6};
+
+    // 2. 实例化 FFT 对象
+    // <数据类型, 精度类型>，通常填 <long long, double>
+    FFT<long long, double> solver;
+
+    // 3. 调用乘法接口，直接得到相乘后的系数数组
+    vector<long long> c = solver.multiply(a, b);
+
+    // 输出结果：c[i] 即为 x^i 的系数
+    // 预期结果：4 + 13x + 28x^2 + 27x^3 + 18x^4
+    for (int i = 0; i < c.size(); i++) {
+        cout << "c[" << i << "] = " << c[i] << endl;
+    }
+
+    // 4. 如果要算 A(x) 的平方，可以调用重载函数（减少一次 FFT 计算）
+    vector<long long> a_squared = solver.multiply(a);
+
+    return 0;
+}
 ```
 #### FTTMOD 任意模数多项式乘法(NTT或MTT)
 ```cpp
